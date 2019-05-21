@@ -8542,6 +8542,7 @@ F:	scripts/Kbuild*
 F:	scripts/Makefile*
 F:	scripts/basic/
 F:	scripts/mk*
+F:	scripts/*vmlinux*
 F:	scripts/mod/
 F:	scripts/package/
 
@@ -11067,10 +11068,8 @@ S:	Supported
 F:	drivers/net/ethernet/qlogic/netxen/
 
 NFC SUBSYSTEM
-M:	Samuel Ortiz <sameo@linux.intel.com>
-L:	linux-wireless@vger.kernel.org
-L:	linux-nfc@lists.01.org (subscribers-only)
-S:	Supported
+L:	netdev@vger.kernel.org
+S:	Orphan
 F:	net/nfc/
 F:	include/net/nfc/
 F:	include/uapi/linux/nfc.h
@@ -15547,6 +15546,12 @@ F:	Documentation/devicetree/bindings/reset/ti,sci-reset.txt
 F:	Documentation/devicetree/bindings/clock/ti,sci-clk.txt
 F:	drivers/clk/keystone/sci-clk.c
 F:	drivers/reset/reset-ti-sci.c
+F:	Documentation/devicetree/bindings/interrupt-controller/ti,sci-intr.txt
+F:	Documentation/devicetree/bindings/interrupt-controller/ti,sci-inta.txt
+F:	drivers/irqchip/irq-ti-sci-intr.c
+F:	drivers/irqchip/irq-ti-sci-inta.c
+F:	include/linux/soc/ti/ti_sci_inta_msi.h
+F:	drivers/soc/ti/ti_sci_inta_msi.c
 
 Texas Instruments ASoC drivers
 M:	Peter Ujfalusi <peter.ujfalusi@ti.com>
