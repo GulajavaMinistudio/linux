@@ -174,16 +174,16 @@ CVE分配
 
   ============= ========================================================
   ARM
-  AMD		Tom Lendacky <tom.lendacky@amd.com>
+  AMD		Tom Lendacky <thomas.lendacky@amd.com>
   IBM
   Intel		Tony Luck <tony.luck@intel.com>
-  Qualcomm	Trilok Soni <tsoni@codeaurora.org>
+  Qualcomm	Trilok Soni <quic_tsoni@quicinc.com>
 
   Microsoft	Sasha Levin <sashal@kernel.org>
   VMware
   Xen		Andrew Cooper <andrew.cooper3@citrix.com>
 
-  Canonical	Tyler Hicks <tyhicks@canonical.com>
+  Canonical	John Johansen <john.johansen@canonical.com>
   Debian	Ben Hutchings <ben@decadent.org.uk>
   Oracle	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>
   Red Hat	Josh Poimboeuf <jpoimboe@redhat.com>

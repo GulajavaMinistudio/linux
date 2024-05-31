@@ -1533,14 +1533,14 @@ struct max98090_priv {
 	struct snd_soc_jack *jack;
 	unsigned int dai_fmt;
 	int tdm_slots;
-	int tdm_width;
+	int tdm_lslot;
+	int tdm_rslot;
 	u8 lin_state;
 	unsigned int pa1en;
 	unsigned int pa2en;
 	unsigned int sidetone;
 	bool master;
-	int saved_count;
-	int saved_shdn;
+	bool shdn_pending;
 };
 
 int max98090_mic_detect(struct snd_soc_component *component,
