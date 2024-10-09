@@ -302,7 +302,7 @@ static int init_i2c(struct mgb4_dev *mgbdev)
 	/* create dummy clock required by the xiic-i2c adapter */
 	snprintf(clk_name, sizeof(clk_name), "xiic-i2c.%d", id);
 	mgbdev->i2c_clk = clk_hw_register_fixed_rate(NULL, clk_name, NULL,
-						     0, 125000000);
+						     0, MGB4_HW_FREQ);
 	if (IS_ERR(mgbdev->i2c_clk)) {
 		dev_err(dev, "failed to register I2C clock\n");
 		return PTR_ERR(mgbdev->i2c_clk);
@@ -642,9 +642,6 @@ static void mgb4_remove(struct pci_dev *pdev)
 	struct mgb4_dev *mgbdev = pci_get_drvdata(pdev);
 	int i;
 
-#ifdef CONFIG_DEBUG_FS
-	debugfs_remove_recursive(mgbdev->debugfs);
-#endif
 #if IS_REACHABLE(CONFIG_HWMON)
 	hwmon_device_unregister(mgbdev->hwmon_dev);
 #endif
@@ -658,6 +655,10 @@ static void mgb4_remove(struct pci_dev *pdev)
 	for (i = 0; i < MGB4_VIN_DEVICES; i++)
 		if (mgbdev->vin[i])
 			mgb4_vin_free(mgbdev->vin[i]);
+
+#ifdef CONFIG_DEBUG_FS
+	debugfs_remove_recursive(mgbdev->debugfs);
+#endif
 
 	device_remove_groups(&mgbdev->pdev->dev, mgb4_pci_groups);
 	free_spi(mgbdev);

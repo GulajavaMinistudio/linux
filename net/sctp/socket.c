@@ -4834,10 +4834,14 @@ int sctp_inet_connect(struct socket *sock, struct sockaddr *uaddr,
 	return sctp_connect(sock->sk, uaddr, addr_len, flags);
 }
 
-/* FIXME: Write comments. */
+/* Only called when shutdown a listening SCTP socket. */
 static int sctp_disconnect(struct sock *sk, int flags)
 {
-	return -EOPNOTSUPP; /* STUB */
+	if (!sctp_style(sk, TCP))
+		return -EOPNOTSUPP;
+
+	sk->sk_shutdown |= RCV_SHUTDOWN;
+	return 0;
 }
 
 /* 4.1.4 accept() - TCP Style Syntax
@@ -4866,7 +4870,8 @@ static struct sock *sctp_accept(struct sock *sk, struct proto_accept_arg *arg)
 		goto out;
 	}
 
-	if (!sctp_sstate(sk, LISTENING)) {
+	if (!sctp_sstate(sk, LISTENING) ||
+	    (sk->sk_shutdown & RCV_SHUTDOWN)) {
 		error = -EINVAL;
 		goto out;
 	}
@@ -8552,8 +8557,10 @@ static int sctp_listen_start(struct sock *sk, int backlog)
 	 */
 	inet_sk_set_state(sk, SCTP_SS_LISTENING);
 	if (!ep->base.bind_addr.port) {
-		if (sctp_autobind(sk))
+		if (sctp_autobind(sk)) {
+			inet_sk_set_state(sk, SCTP_SS_CLOSED);
 			return -EAGAIN;
+		}
 	} else {
 		if (sctp_get_port(sk, inet_sk(sk)->inet_num)) {
 			inet_sk_set_state(sk, SCTP_SS_CLOSED);
@@ -9393,7 +9400,8 @@ static int sctp_wait_for_accept(struct sock *sk, long timeo)
 		}
 
 		err = -EINVAL;
-		if (!sctp_sstate(sk, LISTENING))
+		if (!sctp_sstate(sk, LISTENING) ||
+		    (sk->sk_shutdown & RCV_SHUTDOWN))
 			break;
 
 		err = 0;

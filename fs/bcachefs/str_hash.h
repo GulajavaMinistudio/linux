@@ -270,7 +270,7 @@ int bch2_hash_set_in_snapshot(struct btree_trans *trans,
 				desc.hash_bkey(info, bkey_i_to_s_c(insert)),
 				snapshot),
 			   POS(insert->k.p.inode, U64_MAX),
-			   BTREE_ITER_slots|BTREE_ITER_intent, k, ret) {
+			   BTREE_ITER_slots|BTREE_ITER_intent|flags, k, ret) {
 		if (is_visible_key(desc, inum, k)) {
 			if (!desc.cmp_bkey(k, bkey_i_to_s_c(insert)))
 				goto found;
@@ -300,7 +300,7 @@ not_found:
 	if (!found && (flags & STR_HASH_must_replace)) {
 		ret = -BCH_ERR_ENOENT_str_hash_set_must_replace;
 	} else if (found && (flags & STR_HASH_must_create)) {
-		ret = -EEXIST;
+		ret = -BCH_ERR_EEXIST_str_hash_set;
 	} else {
 		if (!found && slot.path)
 			swap(iter, slot);
